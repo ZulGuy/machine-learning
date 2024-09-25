@@ -5,8 +5,7 @@ import matplotlib.pyplot as plt
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix, classification_report
-from sklearn.metrics import roc_curve, auc
+from sklearn.metrics import confusion_matrix, classification_report, roc_curve, auc, log_loss
 
 
 def print_res(message, func):
@@ -110,3 +109,13 @@ print_res("classifier that avoids type || errors", y_fn_pred)
 print_res("Confusion matrix based on y_fn_pred:", confusion_matrix(y_test, y_fn_pred))
 print_res("Classification report based on y_fn_pred:", classification_report(y_test, y_fn_pred))
 
+# Calculate log_loss for each model
+for model_name, model in models.items():
+
+    # Get probabilities for the positive class
+    y_proba = model.predict_proba(X_test)
+
+    # Calculate log_loss
+    loss = log_loss(y_test, y_proba)
+
+    print(f'{model_name} log loss: {loss:.4f}')
